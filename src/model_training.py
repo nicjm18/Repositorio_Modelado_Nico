@@ -377,7 +377,7 @@ def run_training_credit_complete(
         cv_results_all[name] = cv_detailed
         
         # Curvas de aprendizaje para modelos seleccionados
-        if plot_learning_curves_flag and name in ["naive_bayes", "linear_svc", "logistic", "decision_tree", "random_forest", "xgboost"]:
+        if plot_learning_curves_flag and name in ["naive_bayes", "linear_svc", "logistic", "decision_tree", "random_forest", "xgboost", "bagging", "adaboost"]:
             plot_learning_curves(clf, X_train_ready, y_train_ready, 
                                 scoring="recall", model_name=name)
     
@@ -404,10 +404,20 @@ def run_training_credit_complete(
     # Crear directorio si no existe
     os.makedirs(out_dir, exist_ok=True)
 
+    #Guardar todos los modelos entrenados
+    for name, model in trained.items():
+        model_path = os.path.join(out_dir, f"model_{name}.pkl")
+        with open(model_path, "wb") as f:
+            pickle.dump(model, f)
+
     # Guardar el mejor modelo
     model_filename = f"{out_dir}/best_model_{best_name}.pkl"
     with open(model_filename, 'wb') as f:
         pickle.dump(best_clf, f)
+
+    #Guardar el pipeline
+    with open('models/pipeline_ml.pkl', 'wb') as f:
+        pickle.dump(pipeline_ml, f)
 
     print(f"\nModelo guardado en: {model_filename}")
     
@@ -462,8 +472,8 @@ def rank_credit_models_enhanced(results_df, primary_metric="cv_roc_auc_mean", se
 if __name__ == "__main__":
     
     results = run_training_credit_complete(
-        primary_metric="cv_recall_0_mean",
-        secondary_metric="cv_roc_auc_mean",
+        primary_metric="test_f1_0",#"cv_recall_0_mean",
+        secondary_metric="test_accuracy",#"cv_roc_auc_mean",
         plot_learning_curves_flag=True
     )
     
