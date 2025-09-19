@@ -14,6 +14,8 @@ import os
 # Pipeline de feature engineering
 from src.feature_engineering import pipeline_ml
 
+from src.model_monitoring import log_api_prediction
+
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -272,8 +274,9 @@ async def predict_single(features: CreditFeatures):
             probability = 0.5 if prediction == 1 else 0.3  # default basado en predicción
         
         risk_level, risk_score, recommendation = get_risk_level_and_recommendation(probability)
+
         
-        return PredictionResponse(
+        result = PredictionResponse(
             prediction=prediction,
             probability=probability,
             risk_level=risk_level,
@@ -281,7 +284,14 @@ async def predict_single(features: CreditFeatures):
             recommendation=recommendation,
             timestamp=datetime.now().isoformat()
         )
-        
+
+        try:
+            log_api_prediction(data_dict, result.__dict__)
+        except Exception as e:
+            logger.warning(f"Error logging to monitoring: {e}")
+
+        return result
+    
     except Exception as e:
         logger.error(f"Error en predicción: {str(e)}")
         raise HTTPException(status_code=400, detail=f"Error en predicción: {str(e)}")

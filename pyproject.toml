@@ -26,6 +26,7 @@ python-multipart = "^0.0.20"
 pydantic = "^2.11.9"
 aiofiles = "^24.1.0"
 streamlit = "^1.49.1"
+scipy = "^1.15"
 
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0"

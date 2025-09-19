@@ -16,6 +16,7 @@ __pycache__/
 
 # Datos 
 src/BD_creditos.xlsx
+*.db
 
 #Modelos
 models/
