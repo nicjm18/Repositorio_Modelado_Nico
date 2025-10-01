@@ -34,12 +34,12 @@ Se parte de un dataset de créditos, pasando por **EDA, feature engineering, mod
 ---
 
 ## Estructura del proyecto
-
+```bash
 ├── .github/workflows/sonar.yml      # Workflow de CI/CD          
 ├── src/
 │   ├── cargar_datos.py              # Módulo de carga de datos
 │   ├── comprension_eda.ipynb        # Exploratory Data Analysis
-│   ├── config.json                  # Configuración (rutas/parámetros)
+│   ├── config.json                  # Configuración parámetros
 │   ├── feature_engineering.py       # Feature engineering
 │   ├── heuristic_model.py           # Modelo heurístico/base
 │   ├── model_training.py            # Entrenamiento de modelos ML
@@ -48,9 +48,10 @@ Se parte de un dataset de créditos, pasando por **EDA, feature engineering, mod
 │   └── model_monitoring.py          # Monitoreo de drift en Streamlit
 ├── Dockerfile                       # Imagen para despliegue de la API
 ├── requirements.txt                 # Dependencias del proyecto
+├── pyproject.toml                   # Configuración del proyecto y dependencias
 ├── README.md                        # Documentación del proyecto
 ├── set_up.bat                       # Script de inicialización en Windows
-
+```
 
 ---
 
@@ -71,6 +72,9 @@ Se parte de un dataset de créditos, pasando por **EDA, feature engineering, mod
    .venv\Scripts\activate      # Windows
 
    pip install -r requirements.txt #Instalar dependencias
+
+   # O con pyproject.toml (si usan poetry)
+   poetry install
    ```
 
 ---
@@ -80,21 +84,21 @@ Se parte de un dataset de créditos, pasando por **EDA, feature engineering, mod
 ### API con FastAPI
 Levantar la API:
 ```bash
-   uvicorn src.model_deploy:app --reload
+uvicorn src.model_deploy:app --reload
 
    ```
 
 Documentación interactiva: http://127.0.0.1:8000/docs
 
 ### Informe de evaluación (Streamlit)
-    ```bash
+   ```bash
    streamlit run src/model_evaluation.py
    ```
-
+   
 Accede en http://localhost:8501.
 
 ### Monitoreo del modelo (Streamlit)
-    ```bash
+   ```bash
    streamlit run src/model_monitoring.py
    ```
 
@@ -103,9 +107,9 @@ Accede en http://localhost:8501.
 ---
 
 ## Características
--  **EDA**: exploración inicial del dataset.  
--  **Feature Engineering**: preparación, construcción y transformación de variables.  
--  **Modelo Base y Entrenamiento**: modelos de ML con scikit-learn.  
+-  **EDA**: exploración y análisis del dataset.  
+-  **Feature Engineering**: preparación, construcción y transformación de variables. 
+-  **Modelo Base y Entrenamiento**: modelo base con heurística y modelos de ML con scikit-learn.  
 -  **API con FastAPI**: predicciones individuales, por batch o desde archivo csv en tiempo real.  
 -  **Informe en Streamlit**: evaluación de métricas y visualización.  
 -  **Monitoreo**: seguimiento del drift de datos y desempeño del modelo.  
